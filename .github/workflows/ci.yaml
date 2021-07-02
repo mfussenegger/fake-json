@@ -18,18 +18,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v1
-        with:
-          path: ~/.stack
-          key: ${{ runner.os }}-stack-${{ hashFiles('stack.yaml.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-stack-
-
-      - name: Build snapshot
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          stack --no-terminal build --pedantic --flag mkjson:-static --test --only-snapshot
+        uses: freckle/stack-cache-action@main
 
       - name: Build and test Haskell code
         run: |
